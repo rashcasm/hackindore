@@ -5,6 +5,7 @@ import '../index.css';
 import 'leaflet/dist/leaflet.css';
 import AddAssets from "./AddAssets";
 import SideBar from "./SideBar";
+import logo from './logo.png';
 
 const ManagerAssets = () => {
   const [assets, setAssets] = useState([]);
@@ -119,7 +120,7 @@ const ManagerAssets = () => {
       <nav className="relative flex flex-wrap shadow-md">
         <div className="container mx-auto flex flex-wrap">
           <div className="w-full relative flex lg:w-auto lg:static flex">
-            <p className="py-2 flex text-2xl uppercase font-bold leading-snug text-dark">SEMA</p>
+		  <img src={logo} alt="SEMA Logo" className="py-2 h-12" />
           </div>
         </div>
       </nav>
