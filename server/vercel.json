@@ -7,8 +7,8 @@
       }],
     "routes": [
       {
-        "source": "/(.*)",
-        "destination": "/.js"
+        "src": "/(.*)",
+        "dest": "/.js"
       }
     ]
 }
