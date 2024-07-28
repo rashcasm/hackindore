@@ -89,17 +89,17 @@ const UserAssetsTable = () => {
     }
 
 
-  useEffect(() =>{
-    fetch("https://whispering-hollows-91695.herokuapp.com/assets",{
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(res => res.json())
-    .then(data => setAssets(data))
-    // .then(data => setAssets(data))
-  },[])
+  // useEffect(() =>{
+  //   fetch("https://whispering-hollows-91695.herokuapp.com/assets",{
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => setAssets(data))
+  //   // .then(data => setAssets(data))
+  // },[])
 
 
   

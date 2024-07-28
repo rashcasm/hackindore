@@ -7,20 +7,20 @@ const UserTable = () => {
   const [requests, setRequests] = useState([])
   const token = localStorage.getItem('jwt')
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    fetch("https://whispering-hollows-91695.herokuapp.com/requests", {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    }).then((r) => {
-      if (r.ok) {
-        r.json().then((r) => setRequests(r));
-      }
-    });
+  //   fetch("https://whispering-hollows-91695.herokuapp.com/requests", {
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //     }
+  //   }).then((r) => {
+  //     if (r.ok) {
+  //       r.json().then((r) => setRequests(r));
+  //     }
+  //   });
 
-  }, [])
+  // }, [])
   console.log(requests);
 
   const handleSearch = ()=>{

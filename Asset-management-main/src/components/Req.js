@@ -8,53 +8,53 @@ const Req = ({props}) => {
 
 
 
-  const handleApprove = () => {
-    fetch(`https://whispering-hollows-91695.herokuapp.com/requests/${request.id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        status: "Approved"
-      }),
-    }).then((r) => {
-      if (r.ok) {
-        r.json().then((r) => {
-          alert("Success");
-          setRequests(r);
-        });
-      } else {
-        alert("Something went wrong");
-      }
-    });
-  }
+  // const handleApprove = () => {
+  //   fetch(`https://whispering-hollows-91695.herokuapp.com/requests/${request.id}`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       status: "Approved"
+  //     }),
+  //   }).then((r) => {
+  //     if (r.ok) {
+  //       r.json().then((r) => {
+  //         alert("Success");
+  //         setRequests(r);
+  //       });
+  //     } else {
+  //       alert("Something went wrong");
+  //     }
+  //   });
+  // }
 
   
 
-  const handleRejected = () => {
-    fetch(`https://whispering-hollows-91695.herokuapp.com/requests/${request.id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        status: "Rejected",
-      }),
-    }).then((r) => {
-      if (r.ok) {
-        r.json().then((r) => {
-          alert("Success")
-          setRequests(r)
-        });
-      } else {
-        alert("Something went wrong");
-      }
-    });
-  }
+  // const handleRejected = () => {
+  //   fetch(`https://whispering-hollows-91695.herokuapp.com/requests/${request.id}`, {
+  //     method: "PATCH",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`,
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       status: "Rejected",
+  //     }),
+  //   }).then((r) => {
+  //     if (r.ok) {
+  //       r.json().then((r) => {
+  //         alert("Success")
+  //         setRequests(r)
+  //       });
+  //     } else {
+  //       alert("Something went wrong");
+  //     }
+  //   });
+  // }
   
 
   return (

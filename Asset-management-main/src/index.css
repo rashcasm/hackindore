@@ -84,4 +84,25 @@ a:link{
     margin-top: -69px !important;
     margin-left: -100px !important;
   }
+
+  .home-logo{
+    margin-top: -69px !important;
+    margin-left: -50px !important;
+  }
+
+
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
   
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+  
+  .typing-effect {
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 0.15em solid orange; /* Adjust as needed */
+    animation: blink 0.75s step-end infinite;
+  }

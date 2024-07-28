@@ -7,17 +7,17 @@ const RequestsTable = () => {
     const token = localStorage.getItem("jwt")
     const [myFilter, setMyfileter] = useState("");
   
-      useEffect(() => {
+    //   useEffect(() => {
         
-        fetch('https://whispering-hollows-91695.herokuapp.com/requests',{
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        })
-        .then(res => res.json())
-        .then(data => setRequests(data))
-      }, [])
+    //     fetch('https://whispering-hollows-91695.herokuapp.com/requests',{
+    //       method: "GET",
+    //       headers: {
+    //         Authorization: `Bearer ${token}`
+    //       }
+    //     })
+    //     .then(res => res.json())
+    //     .then(data => setRequests(data))
+    //   }, [])
 
       const filteredReuests = requests.filter((req) => {
         if (myFilter === "") {

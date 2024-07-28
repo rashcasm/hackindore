@@ -7,18 +7,18 @@ const UsersTable = () => {
   const[search, setSearch] = useState()
   console.log(users)
 
-  useEffect(() => {
+  // useEffect(() => {
       
-    fetch('https://whispering-hollows-91695.herokuapp.com/users',{
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(res => res.json())
-    .then(data => setUsers(data))
-    console.log(users);
-  }, [])
+  //   fetch('https://whispering-hollows-91695.herokuapp.com/users',{
+  //     method: "GET",
+  //     headers: {
+  //       Authorization: `Bearer ${token}`
+  //     }
+  //   })
+  //   .then(res => res.json())
+  //   .then(data => setUsers(data))
+  //   console.log(users);
+  // }, [])
 
   const handleSearch = ()=>{
     return users.filter((user)=>{  

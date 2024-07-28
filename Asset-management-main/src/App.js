@@ -15,6 +15,9 @@ import UserDashboard from "./components/User-Dashboard/UserDashboard";
 import Dashboard from "./components/AdminDashboard";
 import ManagerDashboard from "./components/ManagerDashboard";
 import Allocated from "./components/Allocated";
+import RegisterComplaint from "./components/User-Dashboard/RegisterComplaint";
+import UpdateMaintenance from "./components/User-Dashboard/UpdateMaintenance";
+
 
 function App() {
   const { setUser } = useContext(UserContext);
@@ -26,6 +29,8 @@ function App() {
           <Route path={'/admin'}  element={<AdminAssets/>} exact/>
           <Route path={'/dashboard'} element={<Dashboard/>} exact />
           <Route path={'/manager'}  element={<ManagerAssets/>} exact/>
+          <Route path={'/registercomplaint'} element={<RegisterComplaint/>} exact />
+          <Route path={'/updatemaintenance'} element={<UpdateMaintenance/>} exact />
           <Route path={'/managerdashboard'}  element={<ManagerDashboard/>} exact/>
           <Route path={'/employee'}  element={<Home/>} exact/>
           <Route path={'/userdashboard'} element={<UserDashboard/>} exact />

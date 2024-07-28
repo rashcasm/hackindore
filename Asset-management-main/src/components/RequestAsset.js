@@ -24,17 +24,17 @@ const RequestAsset = ({item}) => {
         }
 
 
-        fetch('https://whispering-hollows-91695.herokuapp.com/requests',{
-            method: 'POST',
-            mode:'cors',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(request)
-        })
-        .then(res => res.json())
-        .then(data=> console.log(data.message))
-        setShowModal(false)
+        // fetch('https://whispering-hollows-91695.herokuapp.com/requests',{
+        //     method: 'POST',
+        //     mode:'cors',
+        //     headers: {
+        //         'Content-Type': 'application/json'
+        //     },
+        //     body: JSON.stringify(request)
+        // })
+        // .then(res => res.json())
+        // .then(data=> console.log(data.message))
+        // setShowModal(false)
 
         
     }

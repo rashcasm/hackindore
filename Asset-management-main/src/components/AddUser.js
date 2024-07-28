@@ -22,19 +22,19 @@ const AddUser = () => {
             role: role
         }
 
-        fetch('https://whispering-hollows-91695.herokuapp.com/users',{
-            method: 'POST',
-            mode:'cors',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: `Bearer ${token}`
+        // fetch('https://whispering-hollows-91695.herokuapp.com/users',{
+        //     method: 'POST',
+        //     mode:'cors',
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //         Authorization: `Bearer ${token}`
 
-            },
-            body: JSON.stringify(user)
-        })
-        .then(res => res.json())
-        .then(data=> console.log(data.message))
-        setShowModal(false)
+        //     },
+        //     body: JSON.stringify(user)
+        // })
+        // .then(res => res.json())
+        // .then(data=> console.log(data.message))
+        // setShowModal(false)
 
         
     }

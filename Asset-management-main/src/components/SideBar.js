@@ -9,20 +9,10 @@ const SideBar = () => {
   const navigate = useNavigate()
 
   function handleLogoutClick() {
-    fetch("https://whispering-hollows-91695.herokuapp.com/logout", 
-    { method: "DELETE",
-    headers: {
-      Authorization: `Bearer ${token}`
-    }
-    })
-    .then((r) => {
-      if (r.ok) {
-        localStorage.removeItem("jwt", r.jwt)
-        setUser(null);
-        navigate('/')
-      }
-    });
-} 
+    localStorage.removeItem("jwt");
+    setUser(null);
+    navigate('/');
+  }
     
   // console.log();
   return (
