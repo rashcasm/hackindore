@@ -9,8 +9,6 @@ import ManagerAssets from './components/ManagerAssets'
 import { useContext } from 'react';
 import { UserContext } from './custom-hooks/user';
 
-
-
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import AdminAssets from "./components/AdminAssets";
 import UserDashboard from "./components/User-Dashboard/UserDashboard";
@@ -19,23 +17,8 @@ import ManagerDashboard from "./components/ManagerDashboard";
 import Allocated from "./components/Allocated";
 
 function App() {
-  const {setUser} = useContext(UserContext)
-  const token = localStorage.getItem("jwt")
-  useEffect(() => {
-    fetch("https://whispering-hollows-91695.herokuapp.com/me",{
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    })
-    .then(r => {
-      if(r.ok){
-        r.json().then(res => {
-          setUser(res)
-        })
-      }
-    })
-  }, [])
+  const { setUser } = useContext(UserContext);
+
   return (
       <div className='App'>
         <Routes>
@@ -49,7 +32,6 @@ function App() {
           <Route path={'/allocated'} element={<Allocated/>} exact />
           <Route path={'/login'} element={<Login/>}/>
           <Route path={'/register'} element={<Register/>}/>
-         
         </Routes>
       </div>
   );

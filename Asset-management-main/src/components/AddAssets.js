@@ -14,6 +14,44 @@ const generateUID = () => {
   return result;
 };
 
+const departments = [
+  "Administration",
+  "Finance and Accounts",
+  "Public Health",
+  "Urban Planning and Development",
+  "Water Supply and Sewerage",
+  "Education",
+  "Environment",
+  "Solid Waste Management",
+  "Parks and Gardens",
+  "Fire",
+  "Public Relations",
+  "Legal",
+  "Social Welfare",
+  "Housing and Slum Development",
+  "Electricity",
+  "Traffic and Transportation"
+];
+
+const categoriesByDepartment = {
+  "Administration": ["Computer", "Office Supplies"],
+  "Finance and Accounts": ["Financial Software", "Accounting Books"],
+  "Public Health": ["Medical Equipment", "Sanitizers"],
+  "Urban Planning and Development": ["Survey Tools", "Maps"],
+  "Water Supply and Sewerage": ["Pipes", "Water Testing Kits"],
+  "Education": ["Books", "Stationery"],
+  "Environment": ["Plant Equipment", "Soil Testers"],
+  "Solid Waste Management": ["Waste Bins", "Recycling Equipment"],
+  "Parks and Gardens": ["Garden Tools", "Benches"],
+  "Fire": ["Fire Extinguishers", "Safety Gear"],
+  "Public Relations": ["Media Equipment", "Promotional Material"],
+  "Legal": ["Law Books", "Office Supplies"],
+  "Social Welfare": ["Relief Supplies", "Counseling Materials"],
+  "Housing and Slum Development": ["Construction Tools", "Building Materials"],
+  "Electricity": ["Transformers", "Cables"],
+  "Traffic and Transportation": ["Traffic Cones", "Road Signs"]
+};
+
 const AddAssets = ({ fetchAssets }) => {
   const [showModal, setShowModal] = useState(false);
   const [uid, setUid] = useState('');
@@ -28,18 +66,19 @@ const AddAssets = ({ fetchAssets }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
     const formData = new FormData();
     formData.append("department", department);
     formData.append("name", name);
     formData.append("category", category);
     formData.append("description", description);
     formData.append("user_id", 1);
-    formData.append("status", false);
+    formData.append("status", true); // Set status to true (Allocated)
+    formData.append("owner", department); // Add owner field with department name
     if (image) {
       formData.append("image", image);
     }
-
+  
     try {
       const response = await fetch('http://localhost:5000/assets', {
         method: 'POST',
@@ -48,7 +87,9 @@ const AddAssets = ({ fetchAssets }) => {
         },
         body: formData,
       });
-      const data = await response.json();
+      const text = await response.text(); // Get the raw response text
+      console.log('Raw response text:', text); // Log the raw response text
+      const data = JSON.parse(text); // Parse the JSON manually
       if (response.ok) {
         // Generate UID and show barcode
         const newUid = generateUID();
@@ -63,6 +104,7 @@ const AddAssets = ({ fetchAssets }) => {
       alert("Error creating asset: " + err.message);
     }
   };
+  
 
   const handleDownloadBarcode = () => {
     if (barcodeRef.current) {
@@ -104,7 +146,7 @@ const AddAssets = ({ fetchAssets }) => {
           <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none" style={{ zIndex: 1050 }}>
             <div className="relative w-auto my-6 mx-auto max-w-3xl">
               {/*content*/}
-              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-gray-400 outline-none focus:outline-none">
                 {/*header*/}
                 <div className="flex items-start justify-between p-5 border-b border-solid border-slate-200 rounded-t">
                   <h3 className="text-3xl font-semibold">Add New Asset</h3>
@@ -127,15 +169,18 @@ const AddAssets = ({ fetchAssets }) => {
                       >
                         Department
                       </label>
-                      <input
+                      <select
                         value={department}
                         onChange={(e) => setDepartment(e.target.value)}
-                        type="text"
                         id="department"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Enter Department"
                         required
-                      />
+                      >
+                        <option value="">Select Department</option>
+                        {departments.map((dept, index) => (
+                          <option key={index} value={dept}>{dept}</option>
+                        ))}
+                      </select>
                       <label
                         htmlFor="name"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -157,15 +202,18 @@ const AddAssets = ({ fetchAssets }) => {
                       >
                         Category
                       </label>
-                      <input
+                      <select
                         value={category}
                         onChange={(e) => setCategory(e.target.value)}
-                        type="text"
                         id="category"
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Laptop"
                         required
-                      />
+                      >
+                        <option value="">Select Category</option>
+                        {department && categoriesByDepartment[department].map((cat, index) => (
+                          <option key={index} value={cat}>{cat}</option>
+                        ))}
+                      </select>
                       <label
                         htmlFor="description"
                         className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
@@ -218,7 +266,19 @@ const AddAssets = ({ fetchAssets }) => {
           {assetCreated && (
             <div className="fixed inset-0 flex items-center justify-center z-50" style={{ zIndex: 1060 }}>
               <div className="relative w-auto my-6 mx-auto max-w-3xl bg-white p-5 rounded-lg shadow-lg">
-                <div ref={barcodeRef}>
+                <div className="flex justify-between items-center mb-4">
+                  <h3 className="text-xl font-semibold">Barcode</h3>
+                  <button
+                    className="text-red-500 font-bold text-lg"
+                    onClick={() => {
+                      setAssetCreated(false); // Reset the asset created state
+                      setUid(''); // Clear the UID
+                    }}
+                  >
+                    ×
+                  </button>
+                </div>
+                <div ref={barcodeRef} className="mb-4">
                   <Barcode value={uid} />
                 </div>
                 <div className="flex items-center justify-end p-6 border-t border-solid border-slate-200 rounded-b">

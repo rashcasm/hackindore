@@ -1,18 +1,12 @@
 import React from 'react';
 import SideBar from './SideBar';
 import UserAssetsTable from './UserAssetsTable';
-import logo from './logo.png'; // Update the path based on your logo's actual location
+import Navbar from './NavBar'; // Import the Navbar component
 
 const AdminAssets = () => {
   return (
     <div className="min-h-screen">
-      <nav className="relative flex flex-wrap shadow-md">
-        <div className="container mx-auto flex flex-wrap">
-          <div className="w-full relative flex lg:w-auto lg:static flex">
-            <img src={logo} alt="SEMA Logo" className="logobhai" /> {/* Adjust className and style as needed */}
-          </div>
-        </div>
-      </nav>
+      <Navbar /> {/* Use the Navbar component */}
       <div className='grid grid-cols-12'>
         <SideBar />
         <div className='col-span-9 min-h-screen pl-2 md:col-span-10'>

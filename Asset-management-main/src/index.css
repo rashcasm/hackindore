@@ -52,3 +52,36 @@ hr{
 a:link{
     text-decoration: none;
 }
+
+.map-container {
+    height: 100% !important; /* This makes the container height adapt to its parent */
+    max-height: 800px !important; /* You can adjust the max height as needed */
+  }
+  
+  .map-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    height: 100%; /* Ensure the wrapper takes full height */
+  }
+  
+  .map-container {
+    position: relative;
+    flex: 1; /* Allows the map container to grow and shrink with its parent */
+    height: 400px; /* Adjust this as needed */
+  }
+  
+  .map-container .leaflet-container {
+    height: 100%; /* Ensure the Leaflet map takes the full height of its container */
+  }
+  
+
+  .fixed-navbar {
+    height: 60px; /* Fixed height for the navbar */
+  }
+  
+  .navbar-logo {
+    margin-top: -69px !important;
+    margin-left: -100px !important;
+  }
+  

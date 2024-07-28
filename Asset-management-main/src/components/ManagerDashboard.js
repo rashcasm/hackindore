@@ -9,6 +9,8 @@ import 'react-calendar/dist/Calendar.css';
 import { Chart } from 'react-google-charts';
 import Modal from 'react-modal';
 import logo from './logo.png';
+import axios from 'axios';
+import Navbar from './NavBar';
 
 // Mock Data
 const mockData = {
@@ -96,6 +98,20 @@ const ManagerDashboard = () => {
     setAssetUtilization(mockData.assetUtilization);
   }, []);
 
+  useEffect(() => {
+	const fetchAssets = async () => {
+	  try {
+		const response = await axios.get('http://localhost:5000/assets');
+		setAssetDirectory(response.data);
+	  } catch (error) {
+		console.error('Error fetching the assets:', error);
+		toast.error('Failed to fetch assets.');
+	  }
+	};
+  
+	fetchAssets();
+  }, []);
+  
   // Prepare data for pie chart
   const pieData = {
     labels: assets.map(asset => asset.category),
@@ -187,13 +203,7 @@ const ManagerDashboard = () => {
 
   return (
     <div className="min-h-screen">
-      <nav className="relative flex flex-wrap shadow-md">
-        <div className="container mx-auto flex flex-wrap">
-          <div className="w-full relative flex lg:w-auto lg:static flex">
-            <img src={logo} alt="SEMA Logo" className="py-2 h-12" />
-          </div>
-        </div>
-      </nav>
+      <Navbar />
       <div className='grid grid-cols-12 gap-6 p-6'>
         <SideBar />
         <div className='col-span-9 min-h-screen'>
@@ -220,14 +230,11 @@ const ManagerDashboard = () => {
             <div className="bg-white p-6 rounded-lg shadow-md" style={{ maxHeight: '400px', overflowY: 'scroll' }}>
               <h2 className="text-xl font-bold mb-4">Asset Directory</h2>
               <ul>
-                {assetDirectory.slice(0, 5).map((asset, index) => (
+                {assetDirectory.map((asset, index) => (
                   <li key={index} className="mb-2 p-2 border-b cursor-pointer" onClick={() => handleAssetClick(asset)}>
                     <strong>{asset.name}</strong> - {asset.department}
                   </li>
                 ))}
-                {assetDirectory.length > 5 && (
-                  <li className="text-blue-500 cursor-pointer">View more...</li>
-                )}
               </ul>
             </div>
 
@@ -295,45 +302,46 @@ const ManagerDashboard = () => {
       </div>
 
       {selectedAsset && (
-        <Modal isOpen={true} onRequestClose={closeModal} ariaHideApp={false} style={{ content: { maxWidth: '600px', margin: 'auto' } }}>
-          <div className="p-6">
-            <h2 className="text-2xl font-bold mb-4">{selectedAsset.name}</h2>
-            <img src={selectedAsset.image} alt={selectedAsset.name} className="mb-4" style={{ width: '100px', height: '100px' }} />
-            <p><strong>Description:</strong> {selectedAsset.description}</p>
-            <p><strong>Date of Creation:</strong> {selectedAsset.dateOfCreation}</p>
-            <p><strong>Status:</strong> {selectedAsset.status}</p>
-            <p><strong>Lifespan:</strong> {selectedAsset.lifespan}</p>
-            <p><strong>UID:</strong> {selectedAsset.uid}</p>
-            <p><strong>Barcode:</strong> {selectedAsset.barcode}</p>
-            <h3 className="text-xl font-bold mt-4">Maintenance Records</h3>
-            <ul>
-              {selectedAsset.maintenanceRecords.map((record, index) => (
-                <li key={index} className="mb-2 p-2 border-b">
-                  <strong>Date:</strong> {record.date} - <strong>Task:</strong> {record.task}
-                </li>
-              ))}
-            </ul>
-            <button onClick={closeModal} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
-              Close
-            </button>
-          </div>
-          {/* Gantt Chart */}
-          <div className="mt-6">
-            <h3 className="text-xl font-bold mb-4">Lifecycle Gantt Chart</h3>
-            <Chart
-              chartType="Gantt"
-              width="100%"
-              height="400px"
-              data={ganttData}
-              options={{
-                height: 400,
-                gantt: {
-                  trackHeight: 30,
-                },
-              }}
-            />
-          </div>
-        </Modal>
+        <Modal isOpen={!!selectedAsset} onRequestClose={closeModal} ariaHideApp={false} style={{ content: { maxWidth: '600px', margin: 'auto' } }}>
+		<div className="p-6">
+		  <h2 className="text-2xl font-bold mb-4">{selectedAsset?.name}</h2>
+		  <img src={selectedAsset?.image} alt={selectedAsset?.name} className="mb-4" style={{ width: '100px', height: '100px' }} />
+		  <p><strong>Description:</strong> {selectedAsset?.description}</p>
+		  <p><strong>Date of Creation:</strong> {selectedAsset?.dateOfCreation}</p>
+		  <p><strong>Status:</strong> {selectedAsset?.status}</p>
+		  <p><strong>Lifespan:</strong> {selectedAsset?.lifespan}</p>
+		  <p><strong>UID:</strong> {selectedAsset?.uid}</p>
+		  <p><strong>Barcode:</strong> {selectedAsset?.barcode}</p>
+		  <h3 className="text-xl font-bold mt-4">Maintenance Records</h3>
+		  <ul>
+			{(selectedAsset?.maintenanceRecords || []).map((record, index) => (
+			  <li key={index} className="mb-2 p-2 border-b">
+				<strong>Date:</strong> {record.date} - <strong>Task:</strong> {record.task}
+			  </li>
+			))}
+		  </ul>
+		  <button onClick={closeModal} className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
+			Close
+		  </button>
+		</div>
+		{/* Gantt Chart */}
+		<div className="mt-6">
+		  <h3 className="text-xl font-bold mb-4">Lifecycle Gantt Chart</h3>
+		  <Chart
+			chartType="Gantt"
+			width="100%"
+			height="400px"
+			data={ganttData}
+			options={{
+			  height: 400,
+			  gantt: {
+				trackHeight: 30,
+			  },
+			}}
+		  />
+		</div>
+	  </Modal>
+	  
       )}
 
       <ToastContainer />
