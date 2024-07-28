@@ -5,12 +5,6 @@
         "src": ".js",
         "use": "@vercel/node"
       }],
-    "routes": [
-      {
-        "src": "/(.*)",
-        "dest": "/.js"
-      }
-    ],
     "rewrites": [
       {
         "source": "/(.*)",
