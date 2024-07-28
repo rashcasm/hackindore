@@ -11,6 +11,21 @@ const PORT = 5000;
 // MongoDB connection URI
 const mongoURI = 'mongodb+srv://Sarang123:abcdefgh@cluster0.efceamn.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 
+// Ensure uploads directory exists
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir);
+}
+
+// Complaint Schema
+const complaintSchema = new mongoose.Schema({
+  complaint: { type: String, required: true },
+  imageUrl: { type: String },
+  createdAt: { type: Date, default: Date.now },
+});
+
+const Complaint = mongoose.model('Complaint', complaintSchema);
+
 // Asset Model
 const assetSchema = new mongoose.Schema({
   department: { type: String, required: true },
@@ -37,7 +52,7 @@ const User = mongoose.model('User', userSchema);
 
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve static files
+app.use('/uploads', express.static(uploadsDir)); // Serve static files
 
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log('MongoDB connected'))
@@ -46,16 +61,10 @@ mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true })
     process.exit(1); // Exit the process if MongoDB connection fails
   });
 
-// Ensure the uploads directory exists
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir);
-}
-
 // Multer setup for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadsDir);
+    cb(null, 'uploads/');
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname));
@@ -76,6 +85,21 @@ app.post('/register', async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: "Error registering user", error: err.message });
+  }
+});
+
+// Endpoint to submit a complaint
+app.post('/complaints', upload.single('image'), async (req, res) => {
+  const { complaint } = req.body;
+  const imageUrl = req.file ? `/uploads/${req.file.filename}` : '';
+
+  try {
+    const newComplaint = new Complaint({ complaint, imageUrl });
+    await newComplaint.save();
+    res.json({ success: true, message: "Complaint submitted successfully", complaint: newComplaint });
+  } catch (err) {
+    console.error('Error submitting complaint:', err);
+    res.status(400).json({ success: false, message: "Error submitting complaint", error: err.message });
   }
 });
 
